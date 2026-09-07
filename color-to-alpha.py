@@ -56,7 +56,7 @@ def remove_corner_color(directory):
                 print(f'error {filename}: {e}')
 
 if __name__ == "__main__":
-    default = last_folder_helper.get_last_folder()
+    default = last_folder_helper.get_last_folder() + "/converted"
     user_input = input(f'Input folder ({default}): ').strip()
     folder = user_input or default
     if not folder:
