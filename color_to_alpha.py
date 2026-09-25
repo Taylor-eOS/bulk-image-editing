@@ -1,7 +1,8 @@
 import os
 import numpy as np
 from PIL import Image
-import last_folder_helper
+
+INPUT_FOLDER = "input_images/converted/"
 
 def color_to_alpha(img_array, target_color, alpha_threshold=0.02, cleanup_alpha=0.1, cleanup_distance=8):
     target = np.array(target_color[:3], dtype=np.float64) / 255.0
@@ -35,6 +36,13 @@ def color_to_alpha(img_array, target_color, alpha_threshold=0.02, cleanup_alpha=
     result[cleanup_mask] = 0
     return (result * 255.0).round().astype(np.uint8)
 
+def process_image_file(input_path, output_path):
+    img = Image.open(input_path).convert('RGBA')
+    img_array = np.array(img)
+    corner_color = img_array[0, 0]
+    result_array = color_to_alpha(img_array, corner_color)
+    Image.fromarray(result_array, 'RGBA').save(output_path, 'PNG')
+
 def remove_corner_color(directory):
     directory = os.path.expanduser(directory)
     output_directory = os.path.join(directory, 'processed')
@@ -46,21 +54,10 @@ def remove_corner_color(directory):
             output_name = os.path.splitext(filename)[0] + '.png'
             output_path = os.path.join(output_directory, output_name)
             try:
-                img = Image.open(input_path).convert('RGBA')
-                img_array = np.array(img)
-                corner_color = img_array[0, 0]
-                result_array = color_to_alpha(img_array, corner_color)
-                Image.fromarray(result_array, 'RGBA').save(output_path, 'PNG')
+                process_image_file(input_path, output_path)
                 print(f'processed {filename}')
             except Exception as e:
                 print(f'error {filename}: {e}')
 
 if __name__ == "__main__":
-    default = last_folder_helper.get_last_folder() + "/converted"
-    user_input = input(f'Input folder ({default}): ').strip()
-    folder = user_input or default
-    if not folder:
-        folder = '.'
-    last_folder_helper.save_last_folder(folder)
-    remove_corner_color(folder)
-
+    remove_corner_color(INPUT_FOLDER)

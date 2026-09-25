@@ -1,6 +1,7 @@
 import os
 from PIL import Image
-import last_folder_helper
+
+INPUT_FOLDER = "input_images"
 
 def convert_indexed(img, colors=256):
     img = img.convert("RGBA")
@@ -30,10 +31,4 @@ def process_folder(directory):
             print(f"error {name}: {e}")
 
 if __name__ == "__main__":
-    default = last_folder_helper.get_last_folder()
-    user_input = input(f"Input folder ({default}): ").strip()
-    folder = user_input or default
-    if not folder:
-        folder = "."
-    last_folder_helper.save_last_folder(folder)
-    process_folder(folder)
+    process_folder(INPUT_FOLDER)

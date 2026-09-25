@@ -1,8 +1,8 @@
-from PIL import Image
 import os
+from PIL import Image
 
-folder_path = input("Input folder: ")
-target_width = int(input("Pixel size: "))
+INPUT_FOLDER_PATH = input("Input folder: ")
+TARGET_WIDTH = int(input("Pixel size: "))
 
 def get_png_files(folder):
     return [f for f in os.listdir(folder) if f.lower().endswith(".png")]
@@ -30,4 +30,4 @@ def process_folder(folder, width):
             print(f"Failed to resize {filename}: {e}")
 
 if __name__ == "__main__":
-    process_folder(folder_path, target_width)
+    process_folder(INPUT_FOLDER_PATH, TARGET_WIDTH)
