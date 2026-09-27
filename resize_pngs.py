@@ -1,7 +1,7 @@
 import os
 from PIL import Image
 
-INPUT_FOLDER_PATH = input("Input folder: ")
+INPUT_FOLDER_PATH = input("Input folder (input_images): ") or "input_images"
 TARGET_WIDTH = int(input("Pixel size: "))
 
 def get_png_files(folder):
